@@ -43,7 +43,18 @@ $top_items_sql = "SELECT food_name, SUM(quantity) as total_quantity, SUM(total_a
 $top_stmt = $conn->prepare($top_items_sql);
 $top_stmt->bind_param("s", $selected_date);
 $top_stmt->execute();
-$top_items = $top_stmt->get_result();
+$top_items_result = $top_stmt->get_result();
+
+// Fetch all rows into array for multiple uses (Chart + Table)
+$top_items_rows = [];
+$chart_labels = [];
+$chart_data = [];
+
+while($row = $top_items_result->fetch_assoc()) {
+    $top_items_rows[] = $row;
+    $chart_labels[] = $row['food_name'];
+    $chart_data[] = $row['total_quantity'];
+}
 $top_stmt->close();
 ?>
 <!DOCTYPE html>
@@ -53,6 +64,7 @@ $top_stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Report - Restaurant Management System</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/forms-custom.css">
     <style>
         @media print {
             .sidebar, .no-print { display: none; }
@@ -99,6 +111,29 @@ $top_stmt->close();
                     <p style="color: var(--medium-gray);">
                         Generated on: <?php echo date('d M Y H:i'); ?>
                     </p>
+                </div>
+            </div>
+            
+            <!-- Charts Row -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                <!-- Top Items Chart -->
+                <div class="card" style="margin-bottom: 0;">
+                    <div class="card-header">
+                        <h3>Top Items Sales (Qty)</h3>
+                    </div>
+                    <div style="height: 250px; padding: 10px;">
+                        <canvas id="itemsChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Summary Donut Chart -->
+                <div class="card" style="margin-bottom: 0;">
+                    <div class="card-header">
+                        <h3>Income vs Expense</h3>
+                    </div>
+                    <div style="height: 250px; padding: 10px;">
+                        <canvas id="summaryChart"></canvas>
+                    </div>
                 </div>
             </div>
             
@@ -150,16 +185,16 @@ $top_stmt->close();
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($top_items->num_rows > 0): ?>
+                            <?php if (count($top_items_rows) > 0): ?>
                                 <?php $rank = 1; ?>
-                                <?php while ($item = $top_items->fetch_assoc()): ?>
+                                <?php foreach ($top_items_rows as $item): ?>
                                     <tr>
                                         <td><strong>#<?php echo $rank++; ?></strong></td>
                                         <td><?php echo htmlspecialchars($item['food_name']); ?></td>
                                         <td><?php echo $item['total_quantity']; ?></td>
                                         <td><?php echo format_currency($item['total_sales']); ?></td>
                                     </tr>
-                                <?php endwhile; ?>
+                                <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
                                     <td colspan="4" class="text-center">No sales data</td>
@@ -258,5 +293,65 @@ $top_stmt->close();
     </div>
     
     <script src="../assets/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Data from PHP
+            const itemLabels = <?php echo json_encode($chart_labels); ?>;
+            const itemData = <?php echo json_encode($chart_data); ?>;
+            
+            const sales = <?php echo max(0, $total_sales); ?>;
+            const expenses = <?php echo max(0, $total_expenses); ?>;
+            const profit = Math.max(0, sales - expenses);
+
+            // Top Items Chart
+            const itemsCtx = document.getElementById('itemsChart');
+            if (itemsCtx) {
+                new Chart(itemsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: itemLabels,
+                        datasets: [{
+                            label: 'Units Sold',
+                            data: itemData,
+                            backgroundColor: '#5B6CE8',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: { legend: { display: false } },
+                        scales: { x: { beginAtZero: true } }
+                    }
+                });
+            }
+
+            // Summary Donut Chart
+            const summaryCtx = document.getElementById('summaryChart');
+            if (summaryCtx) {
+                new Chart(summaryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Profit', 'Expenses'],
+                        datasets: [{
+                            data: [profit, expenses],
+                            backgroundColor: ['#48BB78', '#F56565'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '60%',
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

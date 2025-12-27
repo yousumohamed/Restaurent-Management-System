@@ -1,0 +1,69 @@
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Top Items Chart
+            const itemsCtx = document.getElementById('itemsChart');
+            if (itemsCtx) {
+                new Chart(itemsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: [<?php 
+                            $names = [];
+                            $top_items->data_seek(0);
+                            while($item = $top_items->fetch_assoc()) {
+                                $names[] = "'" . addslashes($item['food_name']) . "'";
+                            }
+                            echo implode(',', $names);
+                        ?>],
+                        datasets: [{
+                            label: 'Units Sold',
+                            data: [<?php 
+                                $qtys = [];
+                                $top_items->data_seek(0);
+                                while($item = $top_items->fetch_assoc()) {
+                                    $qtys[] = $item['total_quantity'];
+                                }
+                                echo implode(',', $qtys);
+                            ?>],
+                            backgroundColor: '#5B6CE8',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: { legend: { display: false } },
+                        scales: { x: { beginAtZero: true } }
+                    }
+                });
+            }
+
+            // Summary Donut Chart
+            const summaryCtx = document.getElementById('summaryChart');
+            if (summaryCtx) {
+                new Chart(summaryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Profit', 'Expenses'],
+                        datasets: [{
+                            data: [<?php echo max(0, $total_sales - $total_expenses); ?>, <?php echo $total_expenses; ?>],
+                            backgroundColor: ['#48BB78', '#F56565'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '60%',
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

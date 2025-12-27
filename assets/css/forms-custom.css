@@ -1,0 +1,181 @@
+/* ============================================
+   COLORFUL BUTTONS - FORCE COLORS EVERYWHERE
+   ============================================ */
+a.btn,
+button.btn,
+input.btn,
+.btn {
+    display: inline-block !important;
+    padding: 11px 24px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    text-align: center !important;
+    line-height: 1.5 !important;
+}
+
+a.btn-primary,
+button.btn-primary,
+input.btn-primary,
+.btn-primary {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3) !important;
+    border: none !important;
+}
+
+a.btn-primary:hover,
+button.btn-primary:hover,
+input.btn-primary:hover,
+.btn-primary:hover {
+    background: linear-gradient(135deg, #E65A5A 0%, #E67D42 100%) !important;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4) !important;
+    transform: translateY(-2px) !important;
+    color: white !important;
+}
+
+a.btn-success,
+button.btn-success,
+input.btn-success,
+.btn-success {
+    background: linear-gradient(135deg, #48BB78 0%, #38A169 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3) !important;
+    border: none !important;
+}
+
+a.btn-success:hover,
+button.btn-success:hover,
+input.btn-success:hover,
+.btn-success:hover {
+    background: linear-gradient(135deg, #3AA768 0%, #2F8F5A 100%) !important;
+    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4) !important;
+    transform: translateY(-2px) !important;
+    color: white !important;
+}
+
+a.btn-danger,
+button.btn-danger,
+input.btn-danger,
+.btn-danger {
+    background: linear-gradient(135deg, #F56565 0%, #E53E3E 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(245, 101, 101, 0.3) !important;
+    border: none !important;
+}
+
+a.btn-danger:hover,
+button.btn-danger:hover,
+input.btn-danger:hover,
+.btn-danger:hover {
+    background: linear-gradient(135deg, #E35454 0%, #D32D2D 100%) !important;
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4) !important;
+    transform: translateY(-2px) !important;
+    color: white !important;
+}
+
+a.btn-secondary,
+button.btn-secondary,
+input.btn-secondary,
+.btn-secondary {
+    background: linear-gradient(135deg, #718096 0%, #4A5568 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(113, 128, 150, 0.3) !important;
+    border: none !important;
+}
+
+a.btn-secondary:hover,
+button.btn-secondary:hover,
+input.btn-secondary:hover,
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #5F6C7F 0%, #3A4452 100%) !important;
+    box-shadow: 0 4px 12px rgba(113, 128, 150, 0.4) !important;
+    transform: translateY(-2px) !important;
+    color: white !important;
+}
+
+a.btn-sm,
+button.btn-sm,
+input.btn-sm,
+.btn-sm {
+    padding: 8px 16px !important;
+    font-size: 0.85rem !important;
+}
+
+a.btn-block,
+button.btn-block,
+input.btn-block,
+.btn-block {
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Fix for visited links */
+a.btn:visited {
+    color: white !important;
+}
+
+/* ============================================
+   FORM INPUTS - Styled Differently
+   ============================================ */
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #FFE5E5;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    background: #FFF8F8;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #FF6B6B;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+select.form-control {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23FF6B6B' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+input[type="file"].form-control {
+    padding: 10px;
+    cursor: pointer;
+}
+
+input[type="date"].form-control {
+    cursor: pointer;
+}
+
+/* Input Labels */
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.form-group label.required::after {
+    content: " *";
+    color: #F56565;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}

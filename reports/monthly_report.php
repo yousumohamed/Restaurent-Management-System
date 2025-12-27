@@ -47,7 +47,18 @@ $daily_sql = "SELECT
 $daily_stmt = $conn->prepare($daily_sql);
 $daily_stmt->bind_param("ssssssss", $start_date, $end_date, $start_date, $end_date, $start_date, $end_date, $start_date, $end_date);
 $daily_stmt->execute();
-$daily_data = $daily_stmt->get_result();
+$daily_result = $daily_stmt->get_result();
+
+// Store data in array for reuse
+$daily_rows = [];
+$chart_labels = [];
+$chart_sales = [];
+
+while($row = $daily_result->fetch_assoc()) {
+    $daily_rows[] = $row;
+    $chart_labels[] = date('d M', strtotime($row['date']));
+    $chart_sales[] = $row['sales'];
+}
 $daily_stmt->close();
 
 // Get top selling items for the month
@@ -82,6 +93,7 @@ $category_stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monthly Report - Restaurant Management System</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/forms-custom.css">
     <style>
         @media print {
             .sidebar, .no-print { display: none; }
@@ -131,6 +143,16 @@ $category_stmt->close();
                     <p style="color: var(--medium-gray);">
                         Generated on: <?php echo date('d M Y H:i'); ?>
                     </p>
+                </div>
+            </div>
+            
+            <!-- Sales Trend Chart -->
+            <div class="card" style="margin-bottom: 25px;">
+                <div class="card-header">
+                    <h3>Sales Trend (Daily)</h3>
+                </div>
+                <div style="height: 300px; padding: 15px;">
+                    <canvas id="trendChart"></canvas>
                 </div>
             </div>
             
@@ -290,8 +312,8 @@ $category_stmt->close();
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($daily_data->num_rows > 0): ?>
-                                <?php while ($day = $daily_data->fetch_assoc()): ?>
+                            <?php if (count($daily_rows) > 0): ?>
+                                <?php foreach($daily_rows as $day): ?>
                                     <tr>
                                         <td><?php echo format_date($day['date']); ?></td>
                                         <td><?php echo format_currency($day['sales']); ?></td>
@@ -300,7 +322,7 @@ $category_stmt->close();
                                             <?php echo format_currency($day['profit_loss']); ?>
                                         </td>
                                     </tr>
-                                <?php endwhile; ?>
+                                <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
                                     <td colspan="4" class="text-center">No data available</td>
@@ -323,5 +345,68 @@ $category_stmt->close();
     </div>
     
     <script src="../assets/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Trend Chart Data
+            const dates = <?php echo json_encode($chart_labels); ?>;
+            const sales = <?php echo json_encode($chart_sales); ?>;
+
+            const ctx = document.getElementById('trendChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: 'Daily Sales',
+                            data: sales,
+                            borderColor: '#5B6CE8',
+                            backgroundColor: 'rgba(91, 108, 232, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#5B6CE8',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                callbacks: {
+                                    label: function(context) {
+                                        return '$' + context.raw.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: 'rgba(0,0,0,0.05)' },
+                                ticks: {
+                                    callback: function(value) { return '$' + value; }
+                                }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        },
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeOutQuart'
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

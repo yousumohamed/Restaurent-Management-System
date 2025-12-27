@@ -1,0 +1,285 @@
+/* ============================================
+   Landing Page Styles
+   ============================================ */
+:root {
+    --primary-orange: #FF7A18;
+    --primary-red: #E53E3E;
+    --dark-bg: #1A202C;
+    --light-bg: #FFF5F5;
+    --text-dark: #2D3748;
+    --text-light: #F7FAFC;
+    --transition: all 0.3s ease;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    width: 90%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-orange);
+    text-decoration: none;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+    /* Wider gap like screenshot */
+    align-items: center;
+}
+
+.nav-links a:not(.btn-login) {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 1rem;
+    position: relative;
+    padding: 5px 0;
+}
+
+.nav-links a:not(.btn-login):hover {
+    color: var(--primary-orange);
+}
+
+/* Underline effect */
+.nav-links a:not(.btn-login)::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-orange);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:not(.btn-login):hover::after {
+    width: 100%;
+}
+
+.btn-login {
+    background: linear-gradient(135deg, #FF7A18 0%, #FF5A18 100%);
+    color: white !important;
+    padding: 10px 25px;
+    border-radius: 50px;
+    box-shadow: 0 4px 14px 0 rgba(255, 122, 24, 0.39);
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px 0 rgba(255, 122, 24, 0.5);
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+    background: var(--light-bg);
+    padding-top: 80px;
+    /* Navbar height */
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    flex: 1;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: var(--dark-bg);
+}
+
+.hero-content h1 span {
+    color: var(--primary-orange);
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    color: #4A5568;
+    margin-bottom: 40px;
+    max-width: 500px;
+}
+
+.hero-image {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-image img {
+    width: 120%;
+    /* Large overlap */
+    max-width: 800px;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2));
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(1deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: var(--dark-bg);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: var(--transition);
+}
+
+.cta-btn:hover {
+    background: var(--primary-orange);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 122, 24, 0.3);
+}
+
+/* Featured Section */
+.featured {
+    padding: 100px 5%;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+    color: var(--dark-bg);
+}
+
+.section-title span {
+    border-bottom: 4px solid var(--primary-orange);
+}
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.food-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+    position: relative;
+}
+
+.food-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.food-img-container {
+    height: 250px;
+    overflow: hidden;
+    padding: 20px;
+    background: #FFFAF0;
+}
+
+.food-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.food-card:hover img {
+    transform: scale(1.1) rotate(2deg);
+}
+
+.food-info {
+    padding: 25px;
+    text-align: left;
+}
+
+.food-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+    color: var(--dark-bg);
+}
+
+.food-info p {
+    color: #718096;
+    margin: 0;
+}
+
+/* About Section */
+.about {
+    display: flex;
+    align-items: center;
+    padding: 100px 5%;
+    background: white;
+    gap: 50px;
+}
+
+.about-img {
+    flex: 1;
+}
+
+.about-img img {
+    width: 100%;
+    border-radius: 30px;
+    box-shadow: 20px 20px 0 var(--primary-orange);
+}
+
+.about-text {
+    flex: 1;
+}
+
+/* Footer */
+footer {
+    background: var(--dark-bg);
+    color: white;
+    padding: 50px 5%;
+    text-align: center;
+}
+
+footer p {
+    color: #A0AEC0;
+}

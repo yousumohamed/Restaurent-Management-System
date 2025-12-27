@@ -35,7 +35,7 @@ function require_login() {
  * Format currency
  */
 function format_currency($amount) {
-    return 'KSh ' . number_format($amount, 2);
+    return '$' . number_format($amount, 2);
 }
 
 /**

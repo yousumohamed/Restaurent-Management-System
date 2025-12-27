@@ -79,6 +79,7 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Orders - Restaurant Management System</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/forms-custom.css">
 </head>
 <body>
     <div class="wrapper">

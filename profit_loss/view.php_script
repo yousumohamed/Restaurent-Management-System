@@ -1,0 +1,58 @@
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('plChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Total Sales', 'Total Expenses', 'Net <?php echo $is_profit ? "Profit" : "Loss"; ?>'],
+                        datasets: [{
+                            label: 'Amount ($)',
+                            data: [<?php echo $total_sales; ?>, <?php echo $total_expenses; ?>, <?php echo abs($profit_loss); ?>],
+                            backgroundColor: [
+                                '#48BB78', // Sales - Green
+                                '#F56565', // Expenses - Red
+                                '<?php echo $is_profit ? "#4299E1" : "#ED8936"; ?>' // Profit/Loss - Blue/Orange
+                            ],
+                            borderRadius: 8,
+                            barPercentage: 0.5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return '$' + context.raw.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value;
+                                    }
+                                },
+                                grid: { color: '#f0f0f0' }
+                            },
+                            x: { grid: { display: false } }
+                        },
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeOutQuart'
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

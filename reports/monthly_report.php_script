@@ -1,0 +1,76 @@
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('trendChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [<?php 
+                            $dates = [];
+                            $daily_data->data_seek(0);
+                            while($day = $daily_data->fetch_assoc()) {
+                                $dates[] = "'" . date('d M', strtotime($day['date'])) . "'";
+                            }
+                            echo implode(',', $dates);
+                        ?>],
+                        datasets: [{
+                            label: 'Daily Sales',
+                            data: [<?php 
+                                $sales = [];
+                                $daily_data->data_seek(0);
+                                while($day = $daily_data->fetch_assoc()) {
+                                    $sales[] = $day['sales'];
+                                }
+                                echo implode(',', $sales);
+                            ?>],
+                            borderColor: '#5B6CE8',
+                            backgroundColor: 'rgba(91, 108, 232, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#5B6CE8',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                callbacks: {
+                                    label: function(context) {
+                                        return '$' + context.raw.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: 'rgba(0,0,0,0.05)' },
+                                ticks: {
+                                    callback: function(value) { return '$' + value; }
+                                }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        },
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeOutQuart'
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

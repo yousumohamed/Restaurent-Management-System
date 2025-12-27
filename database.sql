@@ -58,8 +58,11 @@ CREATE TABLE IF NOT EXISTS expenses (
 -- ============================================
 
 -- Insert Admin User (password: admin123)
+-- NOTE: If login doesn't work, you can temporarily use plain password for testing:
+-- Run this in phpMyAdmin after importing: UPDATE users SET password = '$2y$10$e0MYzXyjpJS7Pd0RVvHwHe1MEOVkCnKZ8WFqBKCJlKCJDv.Qnj/Aa' WHERE username = 'admin';
+-- Or use the generate_hash.php file to create a new hash
 INSERT INTO users (username, password, full_name, email) VALUES
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'System Administrator', 'admin@restaurant.com');
+('admin', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHe1MEOVkCnKZ8WFqBKCJlKCJDv.Qnj/Aa', 'System Administrator', 'admin@restaurant.com');
 
 -- Insert Sample Orders
 INSERT INTO orders (customer_name, food_name, quantity, price, order_date, image_path) VALUES

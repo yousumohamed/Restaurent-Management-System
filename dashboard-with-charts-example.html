@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard with Animated Charts</title>
+    
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/premium-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Chart Container Styles */
+        .chart-container {
+            background: white;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        
+        .chart-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2D3748;
+        }
+        
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        
+        /* Animated Counter */
+        .counter-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FF7A18;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <?php include 'includes/sidebar.php'; ?>
+        
+        <div class="main-content">
+            <!-- Your existing dashboard content -->
+            
+            <!-- ANIMATED CHARTS SECTION -->
+            <div class="chart-grid">
+                <!-- Revenue Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>📈 Revenue Overview</h3>
+                        <select class="btn-filter" id="revenueFilter">
+                            <option>Last 7 Days</option>
+                            <option>Last 30 Days</option>
+                            <option>Last 3 Months</option>
+                        </select>
+                    </div>
+                    <canvas id="revenueChart" height="80"></canvas>
+                </div>
+                
+                <!-- Sales Breakdown Pie Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>🍕 Sales Breakdown</h3>
+                    </div>
+                    <canvas id="salesPieChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Order Statistics with Animated Counters -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>📊 Order Statistics</h3>
+                </div>
+                <canvas id="orderStatsChart" height="60"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ============================================
+        // ANIMATED REVENUE CHART (Line Chart)
+        // ============================================
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Revenue ($)',
+                    data: [1200, 1900, 1500, 2200, 1800, 2500, 2100],
+                    borderColor: '#FF7A18',
+                    backgroundColor: 'rgba(255, 122, 24, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#FF7A18',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#2D3748',
+                        padding: 12,
+                        borderRadius: 8,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toFixed(2);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        });
+        
+        // ============================================
+        // SALES BREAKDOWN PIE CHART
+        // ============================================
+        const pieCtx = document.getElementById('salesPieChart').getContext('2d');
+        const salesPieChart = new Chart(pieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pizza', 'Burgers', 'Pasta', 'Salads', 'Desserts'],
+                datasets: [{
+                    data: [35, 25, 20, 12, 8],
+                    backgroundColor: [
+                        '#FF7A18',
+                        '#2F80ED',
+                        '#27AE60',
+                        '#EB5757',
+                        '#F2C94C'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: { size: 12 },
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#2D3748',
+                        padding: 12,
+                        borderRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateRotate: true,
+                    animateScale: true,
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        });
+        
+        // ============================================
+        // ORDER STATISTICS BAR CHART
+        // ============================================
+        const statsCtx = document.getElementById('orderStatsChart').getContext('2d');
+        const orderStatsChart = new Chart(statsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Delivered', 'Pending', 'Preparing', 'Cancelled'],
+                datasets: [{
+                    label: 'Orders',
+                    data: [145, 32, 18, 5],
+                    backgroundColor: [
+                        'rgba(39, 174, 96, 0.8)',
+                        'rgba(255, 122, 24, 0.8)',
+                        'rgba(47, 128, 237, 0.8)',
+                        'rgba(235, 87, 87, 0.8)'
+                    ],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#2D3748',
+                        padding: 12,
+                        borderRadius: 8
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        });
+        
+        // ============================================
+        // ANIMATED COUNTER (Optional)
+        // ============================================
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = Math.round(target);
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.round(start);
+                }
+            }, 16);
+        }
+        
+        // Animate stat numbers on page load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.stat-number').forEach(el => {
+                const target = parseInt(el.textContent);
+                if (!isNaN(target)) {
+                    el.textContent = '0';
+                    animateCounter(el, target);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

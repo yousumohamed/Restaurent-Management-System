@@ -1,0 +1,60 @@
+/* ============================================
+   SIDEBAR - Light Red Active Menu
+   ============================================ */
+
+/* Navigation Menu */
+.nav-menu {
+    list-style: none;
+    padding: 20px 12px;
+    margin: 0;
+}
+
+.nav-menu li {
+    margin-bottom: 6px;
+}
+
+.nav-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: #718096;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.95rem;
+    position: relative;
+}
+
+.nav-menu a i {
+    margin-right: 12px;
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.nav-menu a:hover {
+    background: rgba(255, 107, 107, 0.08);
+    color: #FF6B6B;
+    transform: translateX(4px);
+}
+
+.nav-menu a:hover i {
+    color: #FF6B6B;
+}
+
+/* Active Menu Item - Light Red Background */
+.nav-menu a.active,
+.nav-menu li:first-child a {
+    background: rgba(255, 107, 107, 0.12) !important;
+    color: #FF6B6B !important;
+    border-left: 3px solid #FF6B6B !important;
+    padding-left: 13px !important;
+}
+
+.nav-menu a.active i,
+.nav-menu li:first-child a i {
+    color: #FF6B6B !important;
+}

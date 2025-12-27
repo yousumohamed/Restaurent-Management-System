@@ -85,6 +85,7 @@ if (!isset($order_date)) $order_date = date('Y-m-d');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Order - Restaurant Management System</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/forms-custom.css">
 </head>
 <body>
     <div class="wrapper">
@@ -133,7 +134,7 @@ if (!isset($order_date)) $order_date = date('Y-m-d');
                     </div>
                     
                     <div class="form-group">
-                        <label for="price" class="required">Price (KSh)</label>
+                        <label for="price" class="required">Price ($)</label>
                         <input type="number" id="price" name="price" class="form-control" 
                                min="0" step="0.01" required
                                value="<?php echo $price; ?>">
@@ -141,7 +142,7 @@ if (!isset($order_date)) $order_date = date('Y-m-d');
                     
                     <div class="form-group">
                         <div id="totalDisplay" style="font-size: 1.2rem; font-weight: 600; color: var(--primary-red); margin-top: 10px;">
-                            Total: KSh 0.00
+                            Total: $0.00
                         </div>
                     </div>
                     

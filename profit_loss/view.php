@@ -56,6 +56,7 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profit & Loss - Restaurant Management System</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/forms-custom.css">
 </head>
 <body>
     <div class="wrapper">
@@ -93,6 +94,17 @@ $stmt->close();
             
             <!-- Summary -->
             <h3>Summary: <?php echo format_date($start_date); ?> to <?php echo format_date($end_date); ?></h3>
+            
+            <!-- Chart Section -->
+            <div class="card" style="margin-bottom: 25px;">
+                <div class="card-header">
+                    <h3>Financial Overview</h3>
+                </div>
+                <div style="height: 300px; padding: 10px;">
+                    <canvas id="plChart"></canvas>
+                </div>
+            </div>
+
             <div class="stats-grid">
                 <div class="stat-card sales">
                     <h4>Total Sales</h4>
@@ -195,5 +207,60 @@ $stmt->close();
     </div>
     
     <script src="../assets/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('plChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Total Sales', 'Total Expenses', 'Net <?php echo $is_profit ? "Profit" : "Loss"; ?>'],
+                        datasets: [{
+                            label: 'Amount ($)',
+                            data: [<?php echo $total_sales; ?>, <?php echo $total_expenses; ?>, <?php echo abs($profit_loss); ?>],
+                            backgroundColor: [
+                                '#48BB78', // Sales - Green
+                                '#F56565', // Expenses - Red
+                                '<?php echo $is_profit ? "#4299E1" : "#ED8936"; ?>' // Profit/Loss - Blue/Orange
+                            ],
+                            borderRadius: 8,
+                            barPercentage: 0.5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return '$' + context.raw.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value;
+                                    }
+                                },
+                                grid: { color: '#f0f0f0' }
+                            },
+                            x: { grid: { display: false } }
+                        },
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeOutQuart'
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

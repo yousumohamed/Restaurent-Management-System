@@ -105,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Order - Restaurant Management System</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/forms-custom.css">
 </head>
 <body>
     <div class="wrapper">
@@ -152,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     
                     <div class="form-group">
-                        <label for="price" class="required">Price (KSh)</label>
+                        <label for="price" class="required">Price ($)</label>
                         <input type="number" id="price" name="price" class="form-control" 
                                min="0" step="0.01" required
                                value="<?php echo $order['price']; ?>">
@@ -160,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     
                     <div class="form-group">
                         <div id="totalDisplay" style="font-size: 1.2rem; font-weight: 600; color: var(--primary-red); margin-top: 10px;">
-                            Total: KSh <?php echo number_format($order['quantity'] * $order['price'], 2); ?>
+                            Total: $<?php echo number_format($order['quantity'] * $order['price'], 2); ?>
                         </div>
                     </div>
                     

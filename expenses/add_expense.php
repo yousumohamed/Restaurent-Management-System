@@ -62,6 +62,7 @@ if (!isset($expense_date)) $expense_date = date('Y-m-d');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Expense - Restaurant Management System</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/forms-custom.css">
 </head>
 <body>
     <div class="wrapper">
@@ -107,7 +108,7 @@ if (!isset($expense_date)) $expense_date = date('Y-m-d');
                     </div>
                     
                     <div class="form-group">
-                        <label for="amount" class="required">Amount (KSh)</label>
+                        <label for="amount" class="required">Amount ($)</label>
                         <input type="number" id="amount" name="amount" class="form-control" 
                                min="0" step="0.01" required
                                placeholder="Enter amount"
